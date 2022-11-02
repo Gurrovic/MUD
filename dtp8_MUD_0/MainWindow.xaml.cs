@@ -1,18 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace dtp8_MUD_0
 {
@@ -71,12 +61,30 @@ namespace dtp8_MUD_0
             R.SetDirections(N: 1, E: Room.NoDoor, S: Room.NoDoor, W: Room.NoDoor);
             labyrinth[0] = R;
 
-            R = new Room(1, "Korsvägen");
-            R.SetStory("Du står i korsväg. Det går gångar i alla riktningar. ");
+            R = new Room(1, "Hallen");
+            R.SetStory("Du står i en hall. Det går gång norrut. ");
             R.SetImage("vagskal.png");
-            R.SetDirections(N: 2, E: 3, S: 0, W: 4);
+            R.SetDirections(N: 2, E: Room.NoDoor, S: 0, W: Room.NoDoor);
             labyrinth[1] = R;
 
+            R = new Room(1, "Vardagsrummet");
+            R.SetStory("Du står i vardagsrummet. Det går en gång norrut. ");
+            R.SetImage("vagskal.png");
+            R.SetDirections(N: 3, E: Room.NoDoor, S: 1, W: Room.NoDoor);
+            labyrinth[2] = R;
+            
+            R = new Room(1, "Köket");
+            R.SetStory("Du står i köket. Det går en gång norrut. ");
+            R.SetImage("vagskal.png");
+            R.SetDirections(N: 4, E: Room.NoDoor, S: 2, W: Room.NoDoor);
+            labyrinth[3] = R;
+
+            R = new Room(1, "Badrummet");
+            R.SetStory("Du står i badrummet. Det går gångar i alla riktningar. ");
+            R.SetImage("vagskal.png");
+            R.SetDirections(N: 5, E: Room.NoDoor, S: 3, W: Room.NoDoor);
+            labyrinth[4] = R;           
+            
             currentRoom = 0;
             DisplayCurrentRoom();
         }
@@ -98,12 +106,28 @@ namespace dtp8_MUD_0
                 currentRoom = labyrinth[currentRoom].GetNorth();
                 DisplayCurrentRoom();
             }
+            else if(e.Key == Key.Right)
+            {               
+                currentRoom = labyrinth[currentRoom].GetEast();
+                DisplayCurrentRoom();
+            }
+            else if(e.Key == Key.Down)
+            {
+                currentRoom = labyrinth[currentRoom].GetSouth();
+                DisplayCurrentRoom();
+            }
+            else if(e.Key == Key.Left)
+            {
+                currentRoom = labyrinth[currentRoom].GetWest();
+                DisplayCurrentRoom();
+            }
+            
         }
         private void DisplayCurrentRoom()
         {
             string baseDir = AppDomain.CurrentDomain.BaseDirectory;
             Room R = labyrinth[currentRoom];
-            string bitmapFileName = $"{baseDir}/{R.imageFile}";
+            string bitmapFileName = $"{baseDir}/images/{R.imageFile}";
             if (File.Exists(bitmapFileName))
             {
                 Uri uri = new Uri(bitmapFileName, UriKind.RelativeOrAbsolute);
